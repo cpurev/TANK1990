@@ -1,15 +1,18 @@
 #include "mapDrawer.hpp"
 #include <fstream>
 
+
+		
+
 void drawStage(sf::RenderWindow* window) {
-	sf::Texture texture;
-	texture.loadFromFile("img/brick.png");
-	sf::Sprite sprite(texture);
+	sf::Texture texB;
+	texB.loadFromFile("rsc/brick.png");
+	sf::Sprite sprite(texB);
 	sprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
 
-	sf::Texture texture1;
-	texture1.loadFromFile("img/stone.png");
-	sf::Sprite sprite1(texture1);
+	sf::Texture texS;
+	texS.loadFromFile("rsc/stone.png");
+	sf::Sprite sprite1(texS);
 	sprite1.setTextureRect(sf::IntRect(0, 0, 16, 16));
 
 	std::ifstream file("stages/stage1.txt");
