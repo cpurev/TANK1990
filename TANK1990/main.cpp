@@ -1,8 +1,9 @@
 #include <iostream>
-#include <SFML/Graphics.hpp>
+#include "mapDrawer.hpp"
+
 
 int main() { // create the window
-	sf::RenderWindow window(sf::VideoMode(800, 600), "TANK");
+	sf::RenderWindow window(sf::VideoMode(416, 416), "TANK");
 
 	// run the program as long as the window is open
 	while (window.isOpen())
@@ -19,17 +20,13 @@ int main() { // create the window
 		window.clear(sf::Color::Black);
 
 		// draw everything here...
-		sf::Texture texture;
-		texture.loadFromFile("sbrick.png");
-		sf::Sprite sprite(texture);
-		sprite.setTextureRect(sf::IntRect(0, 0, 32, 20));
-		for (auto i = 0; i < window.getSize().x / 32; i++) {
-			for (auto j = 0; j < window.getSize().y / 20; j++) {
-				sprite.setPosition(0.f + i * 32, 0.f + j * 20);
-				window.draw(sprite);
-			}
-		}
-
+		
+		/*texture.loadFromFile("img/tank.png");
+		sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+		sprite.setColor(sf::Color::Green);
+		sprite.setPosition(100.f , 100.f);
+		window.draw(sprite);*/
+		drawStage(&window);
 		// end the current frame
 		window.display();
 	}
