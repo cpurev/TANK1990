@@ -1,4 +1,5 @@
 #include <iostream>
+#include "SFML/Audio/Music.hpp"
 #include "mapDrawer.hpp"
 #include "menu.hpp"
 
@@ -6,7 +7,10 @@
 int main() { // create the window
 	sf::RenderWindow window(sf::VideoMode(416, 416), "TANK");
 	Menu menu(window.getSize().x, window.getSize().y);
-
+	sf::Music music; 
+	if (!music.openFromFile("rsc/game_start.wav"))
+		return -1; // error
+	music.play();
 	// run the program as long as the window is open
 	while (window.isOpen())
 	{
