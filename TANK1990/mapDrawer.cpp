@@ -1,19 +1,16 @@
 #include "mapDrawer.hpp"
 #include <fstream>
 
-
-		
-
 void drawStage(sf::RenderWindow* window) {
-	sf::Texture texB;
-	texB.loadFromFile("rsc/brick.png");
-	sf::Sprite sprite(texB);
-	sprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
+	sf::Texture brickTex;
+	brickTex.loadFromFile("rsc/brick.png");
+	sf::Sprite brick(brickTex);
+	brick.setTextureRect(sf::IntRect(0, 0, 16, 16));
 
-	sf::Texture texS;
-	texS.loadFromFile("rsc/stone.png");
-	sf::Sprite sprite1(texS);
-	sprite1.setTextureRect(sf::IntRect(0, 0, 16, 16));
+	sf::Texture stoneTex;
+	stoneTex.loadFromFile("rsc/stone.png");
+	sf::Sprite stone(stoneTex);
+	stone.setTextureRect(sf::IntRect(0, 0, 16, 16));
 
 	std::ifstream file("stages/stage1.txt");
 	std::string line;
@@ -22,11 +19,11 @@ void drawStage(sf::RenderWindow* window) {
 		for (auto x : line) {
 			switch (x) {
 			case 'a': break;
-			case 'b': sprite.setPosition(0.f + col * 16, 0.f + row * 16);
-				window->draw(sprite);
+			case 'b': brick.setPosition(0.f + col * 16, 0.f + row * 16);
+				window->draw(brick);
 				break;
-			case 's': sprite1.setPosition(0.f + col * 16, 0.f + row * 16);
-				window->draw(sprite1); break;
+			case 's': stone.setPosition(0.f + col * 16, 0.f + row * 16);
+				window->draw(stone); break;
 			default:
 				break;
 			}
