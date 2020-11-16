@@ -1,6 +1,6 @@
 #include "menu.hpp"
-
-Menu::Menu(int width, int height) {
+Menu::Menu() {}
+void Menu::start(int width, int height) {
 	if (!font.loadFromFile("rsc/tank_font.ttf")) {/*No font?*/ }
 
 	title.setFont(font);
@@ -23,11 +23,9 @@ Menu::Menu(int width, int height) {
 	items[1].setString("QUIT");
 	items[1].setPosition(width/2 - 16, height/2 + 32);
 
-	item = -1;
+	item = 0;
 }
-Menu::~Menu() {
 
-}
 void Menu::draw(sf::RenderWindow &window) {
 	window.draw(title);
 	for (auto i = 0; i < MENU_ITEMS; i++) {

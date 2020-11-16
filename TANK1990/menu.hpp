@@ -1,14 +1,15 @@
 //menu.hpp
 //Game starting menu
+#ifndef MENU_HEADER
+#define MENU_HEADER
 #include "SFML/Graphics.hpp"
 
 #define MENU_ITEMS 2
 
 class Menu {
 public:
-	Menu(int width, int height);
-	~Menu();
-
+	Menu();
+	void start(int width, int height);
 	void draw(sf::RenderWindow& window);
 	void moveUp();
 	void moveDown();
@@ -19,3 +20,5 @@ private:
 	sf::Text items[MENU_ITEMS];
 	sf::Text title;
 };
+
+#endif
