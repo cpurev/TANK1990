@@ -20,15 +20,14 @@ Game::Game() {
 	tank.setTextureRect(sf::IntRect(0, 0, 32, 32));
 
 }
-
 void Game::run() {
-	menu.start(416,416);
+	menu.start(416, 416);
 	sf::RenderWindow window(sf::VideoMode(416, 416), "TANK");
 	sf::Music music;
 	if (!music.openFromFile("rsc/game_start.wav"))
 		std::cout<< "Music Error\n"; // error
 	music.play();
-	// run the program as long as the window is open
+	// Start menu
 	while (window.isOpen())
 	{
 		// check all the window's events that were triggered since the last iteration of the loop
@@ -41,7 +40,9 @@ void Game::run() {
 				if (event.key.code == sf::Keyboard::Down)
 					menu.moveDown();
 				if (event.key.code == sf::Keyboard::Return) {
-					if (menu.getItemIndex() == 1)
+					if (menu.getItemIndex() == 0)
+						break;
+					else
 						window.close();
 				}
 			}
@@ -50,12 +51,13 @@ void Game::run() {
 				window.close();
 		}
 		window.clear();
-
 		menu.draw(window);
-
 		window.display();
 	}
-
+	play();
+}
+void Game::play() {
+	std::cout << "why";
 }
 void Game::drawStage(sf::RenderWindow* window) {
 

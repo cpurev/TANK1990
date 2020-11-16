@@ -23,7 +23,7 @@ void Menu::start(int width, int height) {
 	items[1].setString("QUIT");
 	items[1].setPosition(width/2 - 16, height/2 + 32);
 
-	item = 0;
+	item = -1;
 }
 
 void Menu::draw(sf::RenderWindow &window) {

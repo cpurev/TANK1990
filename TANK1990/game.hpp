@@ -16,6 +16,7 @@ public:
 	void drawStage(sf::RenderWindow* window);
 	void run();
 	void pauseMenu(int width, int height);
+	void play();
 private:
 	Menu menu;
 	sf::Texture brickTex;
