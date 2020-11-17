@@ -41,7 +41,7 @@ void Game::run() {
 					menu.moveDown();
 				if (event.key.code == sf::Keyboard::Return) {
 					if (menu.getItemIndex() == 0)
-						break;
+						play(&window);
 					else
 						window.close();
 				}
@@ -54,12 +54,37 @@ void Game::run() {
 		menu.draw(window);
 		window.display();
 	}
-	play();
 }
-void Game::play() {
-	std::cout << "why";
+void Game::play(sf::RenderWindow* window) {
+	initStage();
+	while (window->isOpen())
+	{
+		// check all the window's events that were triggered since the last iteration of the loop
+		sf::Event event;
+		while (window->pollEvent(event))
+		{
+			if (event.type == sf::Event::KeyReleased) {
+				if (event.key.code == sf::Keyboard::Up)
+					menu.moveUp();
+				if (event.key.code == sf::Keyboard::Down)
+					menu.moveDown();
+			}
+			// "close requested" event: we close the window
+			if (event.type == sf::Event::Closed)
+				window->close();
+		}
+		window->clear();
+		draw(window);
+		window->display();
+	}
 }
-void Game::drawStage(sf::RenderWindow* window) {
+
+void Game::draw(sf::RenderWindow* window) {
+	for (auto i : map){
+		window->draw(i);
+	}
+}
+void Game::initStage() {
 
 	std::ifstream file("stages/stage1.txt");
 	std::string line;
@@ -68,11 +93,10 @@ void Game::drawStage(sf::RenderWindow* window) {
 		for (auto x : line) {
 			switch (x) {
 			case 'a': break;
-			case 'b': brick.setPosition(0.f + col * 16, 0.f + row * 16);
-				window->draw(brick);
-				break;
-			case 's': stone.setPosition(0.f + col * 16, 0.f + row * 16);
-				window->draw(stone); break;
+			case 'b': brick.setPosition((float)(col * 16), (float)(row * 16));
+				map.push_back(brick); break;
+			case 's': stone.setPosition((float)(col * 16), (float)(row * 16));
+				map.push_back(stone); break;
 			default:
 				break;
 			}
