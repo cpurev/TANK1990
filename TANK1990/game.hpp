@@ -28,6 +28,8 @@ private:
 	sf::Sprite stone;
 	sf::Texture tankTex;
 	sf::Sprite tank;
+	sf::Texture eagleTex;
+	sf::Sprite eagle;
 };
 
 #endif

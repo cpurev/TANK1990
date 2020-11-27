@@ -19,14 +19,22 @@ Game::Game() {
 	tank.setTexture(tankTex);
 	tank.setTextureRect(sf::IntRect(0, 0, 32, 32));
 
+	eagleTex.loadFromFile("rsc/graphics.png");
+	eagle.setTexture(eagleTex);
+	eagle.setPosition((float)(50), (float)(50));
+	eagle.setTextureRect(sf::IntRect(896, 64, 32, 32));
+	map.push_back(eagle);
+
 }
 void Game::run() {
+	int a = 0, b = 0;
 	menu.start(416, 416);
 	sf::RenderWindow window(sf::VideoMode(416, 416), "TANK");
 	sf::Music music;
 	if (!music.openFromFile("rsc/game_start.wav"))
 		std::cout<< "Music Error\n"; // error
 	music.play();
+	window.setFramerateLimit(60);
 	// Start menu
 	while (window.isOpen())
 	{
@@ -51,7 +59,8 @@ void Game::run() {
 				window.close();
 		}
 		window.clear();
-		menu.draw(window);
+		window.draw(eagle);
+		//menu.draw(window);
 		window.display();
 	}
 }
@@ -92,7 +101,7 @@ void Game::initStage() {
 	while (std::getline(file, line)) {
 		for (auto x : line) {
 			switch (x) {
-			case 'a': break;
+			case 'e': break;
 			case 'b': brick.setPosition((float)(col * 16), (float)(row * 16));
 				map.push_back(brick); break;
 			case 's': stone.setPosition((float)(col * 16), (float)(row * 16));
