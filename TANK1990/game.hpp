@@ -21,6 +21,7 @@ public:
 	void draw(sf::RenderWindow* window);
 private:
 	Menu menu;
+	bool eagleSet = false;
 	std::vector<sf::Sprite> map;
 	sf::Texture brickTex;
 	sf::Sprite brick;

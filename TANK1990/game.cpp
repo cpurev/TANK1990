@@ -21,9 +21,7 @@ Game::Game() {
 
 	eagleTex.loadFromFile("rsc/graphics.png");
 	eagle.setTexture(eagleTex);
-	eagle.setPosition((float)(50), (float)(50));
 	eagle.setTextureRect(sf::IntRect(896, 64, 32, 32));
-	map.push_back(eagle);
 
 }
 void Game::run() {
@@ -59,8 +57,7 @@ void Game::run() {
 				window.close();
 		}
 		window.clear();
-		window.draw(eagle);
-		//menu.draw(window);
+		menu.draw(window);
 		window.display();
 	}
 }
@@ -101,7 +98,10 @@ void Game::initStage() {
 	while (std::getline(file, line)) {
 		for (auto x : line) {
 			switch (x) {
-			case 'e': break;
+			case 'e': if (eagleSet) break; else {
+				eagle.setPosition((float)(col * 16), (float)(row * 16));
+				map.push_back(eagle); eagleSet = true;  break; 
+			}
 			case 'b': brick.setPosition((float)(col * 16), (float)(row * 16));
 				map.push_back(brick); break;
 			case 's': stone.setPosition((float)(col * 16), (float)(row * 16));
