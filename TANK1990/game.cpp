@@ -71,9 +71,9 @@ void Game::play(sf::RenderWindow* window) {
 		{
 			if (event.type == sf::Event::KeyReleased) {
 				if (event.key.code == sf::Keyboard::Up)
-					menu.moveUp();
+					player.moveUp();
 				if (event.key.code == sf::Keyboard::Down)
-					menu.moveDown();
+					player.moveDown();
 			}
 			// "close requested" event: we close the window
 			if (event.type == sf::Event::Closed)
@@ -98,6 +98,10 @@ void Game::initStage() {
 	while (std::getline(file, line)) {
 		for (auto x : line) {
 			switch (x) {
+			case 'p': if (playerSet) break; else {
+				player.setPosition(col * 16, row * 16);
+				map.push_back(player.getTank()); playerSet = true;  break;
+			}
 			case 'e': if (eagleSet) break; else {
 				eagle.setPosition((float)(col * 16), (float)(row * 16));
 				map.push_back(eagle); eagleSet = true;  break; 

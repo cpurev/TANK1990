@@ -10,18 +10,20 @@
 #include <string>
 #include <vector>
 #include "menu.hpp"
+#include "player.hpp"
 
 class Game {
 public:
 	Game();
 	void initStage();
 	void run();
-	void pauseMenu(int width, int height);
 	void play(sf::RenderWindow* window);
 	void draw(sf::RenderWindow* window);
 private:
+	Player player;
 	Menu menu;
 	bool eagleSet = false;
+	bool playerSet = false;
 	std::vector<sf::Sprite> map;
 	sf::Texture brickTex;
 	sf::Sprite brick;
