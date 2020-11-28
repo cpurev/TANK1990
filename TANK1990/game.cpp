@@ -74,6 +74,12 @@ void Game::play(sf::RenderWindow* window) {
 					player.moveUp();
 				if (event.key.code == sf::Keyboard::Down)
 					player.moveDown();
+				if (event.key.code == sf::Keyboard::Left)
+					player.moveLeft();
+				if (event.key.code == sf::Keyboard::Right)
+					player.moveRight();
+				/*if (event.key.code == sf::Keyboard::Space)
+					player.shoot();*/
 			}
 			// "close requested" event: we close the window
 			if (event.type == sf::Event::Closed)
@@ -86,6 +92,7 @@ void Game::play(sf::RenderWindow* window) {
 }
 
 void Game::draw(sf::RenderWindow* window) {
+	window->draw(player.getTank());
 	for (auto i : map){
 		window->draw(i);
 	}
@@ -100,7 +107,7 @@ void Game::initStage() {
 			switch (x) {
 			case 'p': if (playerSet) break; else {
 				player.setPosition(col * 16, row * 16);
-				map.push_back(player.getTank()); playerSet = true;  break;
+				playerSet = true;  break;
 			}
 			case 'e': if (eagleSet) break; else {
 				eagle.setPosition((float)(col * 16), (float)(row * 16));
