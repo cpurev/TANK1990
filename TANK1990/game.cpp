@@ -7,21 +7,16 @@
 #include "SFML/Audio/Music.hpp"
 
 Game::Game() {
-	brickTex.loadFromFile("rsc/brick.png");
-	brick.setTexture(brickTex);
-	brick.setTextureRect(sf::IntRect(0, 0, 16, 16));
+	texture.loadFromFile("rsc/graphics.png");
 
-	stoneTex.loadFromFile("rsc/stone.png");
-	stone.setTexture(stoneTex);
-	stone.setTextureRect(sf::IntRect(0, 0, 16, 16));
+	brick.setTexture(texture);
+	brick.setTextureRect(sf::IntRect(28 * 32, 0, 16, 16));
 
-	tankTex.loadFromFile("rsc/tank.png");
-	tank.setTexture(tankTex);
-	tank.setTextureRect(sf::IntRect(0, 0, 32, 32));
+	stone.setTexture(texture);
+	stone.setTextureRect(sf::IntRect(28 * 32, 1 * 16, 16, 16));
 
-	eagleTex.loadFromFile("rsc/graphics.png");
-	eagle.setTexture(eagleTex);
-	eagle.setTextureRect(sf::IntRect(896, 64, 32, 32));
+	eagle.setTexture(texture);
+	eagle.setTextureRect(sf::IntRect(28 * 32, 2 * 32, 32, 32));
 
 }
 void Game::run() {
@@ -107,16 +102,16 @@ void Game::initStage() {
 			switch (x) {
 			case 'p': if (playerSet) break; else {
 				player.setPosition(col * 16, row * 16);
-				playerSet = true;  break;
+				playerSet = true;   break;
 			}
 			case 'e': if (eagleSet) break; else {
 				eagle.setPosition((float)(col * 16), (float)(row * 16));
-				map.push_back(eagle); eagleSet = true;  break; 
+				map.push_back(eagle); eagleSet = true;  break;
 			}
 			case 'b': brick.setPosition((float)(col * 16), (float)(row * 16));
-				map.push_back(brick); break;
+				map.push_back(brick);  break;
 			case 's': stone.setPosition((float)(col * 16), (float)(row * 16));
-				map.push_back(stone); break;
+				map.push_back(stone);  break;
 			default:
 				break;
 			}
@@ -125,5 +120,4 @@ void Game::initStage() {
 		row++;
 		col = 0;
 	}
-
 }

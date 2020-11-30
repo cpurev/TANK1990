@@ -8,7 +8,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
-#include <vector>
 #include "menu.hpp"
 #include "player.hpp"
 
@@ -20,18 +19,14 @@ public:
 	void play(sf::RenderWindow* window);
 	void draw(sf::RenderWindow* window);
 private:
-	Player player;
 	Menu menu;
 	bool eagleSet = false;
 	bool playerSet = false;
+	Player player;
 	std::vector<sf::Sprite> map;
-	sf::Texture brickTex;
+	sf::Texture texture;
 	sf::Sprite brick;
-	sf::Texture stoneTex;
 	sf::Sprite stone;
-	sf::Texture tankTex;
-	sf::Sprite tank;
-	sf::Texture eagleTex;
 	sf::Sprite eagle;
 };
 

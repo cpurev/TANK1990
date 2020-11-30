@@ -15,6 +15,7 @@ private:
 	sf::Texture playerTex;
 	sf::Sprite playerTank;
 	sf::Vector2f position;
+	std::vector<sf::Sprite> map;
 };
 
 #endif
