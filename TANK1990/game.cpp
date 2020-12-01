@@ -106,12 +106,12 @@ void Game::initStage() {
 			}
 			case 'e': if (eagleSet) break; else {
 				eagle.setPosition((float)(col * 16), (float)(row * 16));
-				map.push_back(eagle); eagleSet = true; maps->at(row)[col] = 'e'; break;
+				map.push_back(eagle); eagleSet = true; maps->at(col)[row] = 'e'; break;
 			}
 			case 'b': brick.setPosition((float)(col * 16), (float)(row * 16));
-				map.push_back(brick); maps->at(row)[col] = 'b'; break;
+				map.push_back(brick); maps->at(col)[row] = 'b'; break;
 			case 's': stone.setPosition((float)(col * 16), (float)(row * 16));
-				map.push_back(stone); maps->at(row)[col] = 's'; break;
+				map.push_back(stone); maps->at(col)[row] = 's'; break;
 			default:
 				break;
 			}
@@ -120,10 +120,11 @@ void Game::initStage() {
 		row++;
 		col = 0;
 	}
-	for (auto i = 0; i < maps->size(); i++) {
+	player.getMap(maps);
+	/*for (auto i = 0; i < maps->size(); i++) {
 		for (auto j = 0; j < maps->at(i).size(); j++) {
 			printf("%c", maps->at(i)[j]);
 		}
 		printf("\n");
-	}
+	}*/
 }

@@ -26,8 +26,10 @@ void Player::moveUp() {
 	playerTank.setTextureRect(sf::IntRect(24 * 32, 0, 32, 32));
 	if (position.y - 16 < 0)
 		return;
-
-	//printf("%c", maps[position.x][position.y]); 
+	if (maps->at(position.x / 16)[(position.y - 16 ) / 16] != 'a')
+		return;
+	if (maps->at((position.x+16) / 16)[(position.y - 16) / 16] != 'a')
+		return;
 
 	position = sf::Vector2f(position.x, position.y-16);
 	playerTank.setPosition(position);
@@ -35,6 +37,10 @@ void Player::moveUp() {
 void Player::moveRight() {
 	playerTank.setTextureRect(sf::IntRect(25* 32, 0, 32, 32));
 	if (position.x + 16 > 386)
+		return;
+	if (maps->at((position.x+32) / 16)[position.y / 16] != 'a')
+		return;
+	if (maps->at((position.x + 32) / 16)[(position.y+16) / 16] != 'a')
 		return;
 
 	position = sf::Vector2f(position.x +16, position.y);
@@ -44,6 +50,10 @@ void Player::moveDown() {
 	playerTank.setTextureRect(sf::IntRect(26 * 32, 0, 32, 32));
 	if (position.y + 16 > 386)
 		return;
+	if (maps->at(position.x / 16)[(position.y + 32) / 16] != 'a')
+		return;
+	if (maps->at((position.x+16) / 16)[(position.y + 32) / 16] != 'a')
+		return;
 
 	position = sf::Vector2f(position.x , position.y + 16);
 	playerTank.setPosition(position);
@@ -51,6 +61,10 @@ void Player::moveDown() {
 void Player::moveLeft() {
 	playerTank.setTextureRect(sf::IntRect(27 * 32, 0, 32, 32));
 	if (position.x - 16 < 0)
+		return;
+	if (maps->at((position.x-16) / 16)[position.y / 16] != 'a')
+		return;
+	if (maps->at((position.x - 16) / 16)[(position.y+16) / 16] != 'a')
 		return;
 
 	position = sf::Vector2f(position.x - 16, position.y);
