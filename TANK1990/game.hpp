@@ -26,7 +26,7 @@ private:
 	bool playerSet = false;
 	Player player;
 	std::vector<sf::Sprite> map;
-	std::vector<std::vector<char>> maps;
+	std::shared_ptr<std::vector<std::vector<char>>> maps;
 	sf::Texture texture;
 	sf::Sprite brick;
 	sf::Sprite stone;

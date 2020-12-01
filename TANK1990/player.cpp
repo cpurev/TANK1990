@@ -19,15 +19,15 @@ sf::Sprite Player::getTank() {
 	return playerTank;
 }
 
-void Player::getMap(std::vector<std::vector<char>>& m) {
-	maps = std::make_shared<std::vector<std::vector<char>>>(m);
+void Player::getMap(std::shared_ptr<std::vector<std::vector<char>>>& m){
+	maps = m;
 }
 void Player::moveUp() {
 	playerTank.setTextureRect(sf::IntRect(24 * 32, 0, 32, 32));
 	if (position.y - 16 < 0)
 		return;
 
-	printf("%f", maps->at(position.x).at(position.y)); 
+	//printf("%c", maps[position.x][position.y]); 
 
 	position = sf::Vector2f(position.x, position.y-16);
 	playerTank.setPosition(position);

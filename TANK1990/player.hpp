@@ -7,7 +7,7 @@ public:
 	Player();
 	void setPosition(int x, int y);
 	sf::Sprite getTank();
-	void getMap(std::vector<std::vector<char>>& m);
+	void getMap(std::shared_ptr<std::vector<std::vector<char>>>& m);
 	void moveUp();
 	void moveDown();
 	void moveLeft();

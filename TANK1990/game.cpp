@@ -6,7 +6,7 @@
 
 #include "SFML/Audio/Music.hpp"
 
-Game::Game() {
+Game::Game() : maps(std::make_shared<std::vector<std::vector<char>>>(26, std::vector<char>(26, 'a'))) {
 	texture.loadFromFile("rsc/graphics.png");
 
 	brick.setTexture(texture);
@@ -18,8 +18,6 @@ Game::Game() {
 	eagle.setTexture(texture);
 	eagle.setTextureRect(sf::IntRect(28 * 32, 2 * 32, 32, 32));
 
-	std::vector<std::vector<char>> vec(26, std::vector<char>(26, 'a'));
-	maps = vec;
 }
 void Game::run() {
 	int a = 0, b = 0;
@@ -108,12 +106,12 @@ void Game::initStage() {
 			}
 			case 'e': if (eagleSet) break; else {
 				eagle.setPosition((float)(col * 16), (float)(row * 16));
-				map.push_back(eagle); eagleSet = true; maps[row][col] = 'e'; break;
+				map.push_back(eagle); eagleSet = true; maps->at(row)[col] = 'e'; break;
 			}
 			case 'b': brick.setPosition((float)(col * 16), (float)(row * 16));
-				map.push_back(brick); maps[row][col] = 'b'; break;
+				map.push_back(brick); maps->at(row)[col] = 'b'; break;
 			case 's': stone.setPosition((float)(col * 16), (float)(row * 16));
-				map.push_back(stone); maps[row][col] = 's'; break;
+				map.push_back(stone); maps->at(row)[col] = 's'; break;
 			default:
 				break;
 			}
@@ -122,9 +120,9 @@ void Game::initStage() {
 		row++;
 		col = 0;
 	}
-	for (auto i = 0; i < maps.size(); i++) {
-		for (auto j = 0; j < maps[i].size(); j++) {
-			printf("%c", maps[i][j]);
+	for (auto i = 0; i < maps->size(); i++) {
+		for (auto j = 0; j < maps->at(i).size(); j++) {
+			printf("%c", maps->at(i)[j]);
 		}
 		printf("\n");
 	}
