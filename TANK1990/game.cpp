@@ -108,12 +108,12 @@ void Game::initStage() {
 			}
 			case 'e': if (eagleSet) break; else {
 				eagle.setPosition((float)(col * 16), (float)(row * 16));
-				map.push_back(eagle); eagleSet = true; maps[col][row] = 'e'; break;
+				map.push_back(eagle); eagleSet = true; maps[row][col] = 'e'; break;
 			}
 			case 'b': brick.setPosition((float)(col * 16), (float)(row * 16));
-				map.push_back(brick); maps[col][row] = 'b'; break;
+				map.push_back(brick); maps[row][col] = 'b'; break;
 			case 's': stone.setPosition((float)(col * 16), (float)(row * 16));
-				map.push_back(stone); maps[col][row] = 's'; break;
+				map.push_back(stone); maps[row][col] = 's'; break;
 			default:
 				break;
 			}
@@ -122,5 +122,10 @@ void Game::initStage() {
 		row++;
 		col = 0;
 	}
-	
+	for (auto i = 0; i < maps.size(); i++) {
+		for (auto j = 0; j < maps[i].size(); j++) {
+			printf("%c", maps[i][j]);
+		}
+		printf("\n");
+	}
 }

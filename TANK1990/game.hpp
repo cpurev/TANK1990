@@ -10,6 +10,7 @@
 #include <string>
 #include "menu.hpp"
 #include "player.hpp"
+#include <memory>
 #define map_vec 
 
 class Game {
