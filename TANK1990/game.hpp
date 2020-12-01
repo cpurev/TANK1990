@@ -10,6 +10,7 @@
 #include <string>
 #include "menu.hpp"
 #include "player.hpp"
+#define map_vec 
 
 class Game {
 public:
@@ -24,6 +25,7 @@ private:
 	bool playerSet = false;
 	Player player;
 	std::vector<sf::Sprite> map;
+	std::vector<std::vector<char>> maps;
 	sf::Texture texture;
 	sf::Sprite brick;
 	sf::Sprite stone;

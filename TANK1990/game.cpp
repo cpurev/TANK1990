@@ -18,6 +18,8 @@ Game::Game() {
 	eagle.setTexture(texture);
 	eagle.setTextureRect(sf::IntRect(28 * 32, 2 * 32, 32, 32));
 
+	std::vector<std::vector<char>> vec(26, std::vector<char>(26, 'a'));
+	maps = vec;
 }
 void Game::run() {
 	int a = 0, b = 0;
@@ -102,16 +104,16 @@ void Game::initStage() {
 			switch (x) {
 			case 'p': if (playerSet) break; else {
 				player.setPosition(col * 16, row * 16);
-				playerSet = true;   break;
+				playerSet = true;  break;
 			}
 			case 'e': if (eagleSet) break; else {
 				eagle.setPosition((float)(col * 16), (float)(row * 16));
-				map.push_back(eagle); eagleSet = true;  break;
+				map.push_back(eagle); eagleSet = true; maps[col][row] = 'e'; break;
 			}
 			case 'b': brick.setPosition((float)(col * 16), (float)(row * 16));
-				map.push_back(brick);  break;
+				map.push_back(brick); maps[col][row] = 'b'; break;
 			case 's': stone.setPosition((float)(col * 16), (float)(row * 16));
-				map.push_back(stone);  break;
+				map.push_back(stone); maps[col][row] = 's'; break;
 			default:
 				break;
 			}
@@ -120,4 +122,5 @@ void Game::initStage() {
 		row++;
 		col = 0;
 	}
+	
 }
