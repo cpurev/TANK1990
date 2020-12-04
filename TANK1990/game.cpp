@@ -8,8 +8,14 @@
 
 #include "SFML/Audio/Music.hpp"
 
+extern "C" int bar(std::vector<sf::Sprite>& map); // written in assembly!
+
 Game::Game() : maps(std::make_shared<std::vector<std::vector<char>>>(26, std::vector<char>(26, 'a'))) {
 	texture.loadFromFile("rsc/texture.png");
+
+	area.setTexture(texture);
+	area.setTextureRect(sf::IntRect(29 * 32, 0, 16, 16));
+	area.setColor(sf::Color::Transparent);
 
 	brick.setTexture(texture);
 	brick.setTextureRect(sf::IntRect(29 * 32, 0, 16, 16));
@@ -76,16 +82,17 @@ void Game::run() {
 	int a = 0, b = 0;
 	menu.start(416 + 48, 416);
 	sf::RenderWindow window(sf::VideoMode(416 + 48, 416), "TANK");
-	sf::Music music;
+	/*sf::Music music;
 	if (!music.openFromFile("rsc/game_start.wav"))
 		std::cout<< "Music Error\n"; // error
-	music.play();
+	music.play();*/
 	window.setFramerateLimit(60);
 	// Start menu
 	menu.run(window);
 	play(&window);
 }
 void Game::play(sf::RenderWindow* window) {
+	//Load the stage after menu
 	initStage();
 	while (window->isOpen())
 	{
@@ -109,6 +116,7 @@ void Game::play(sf::RenderWindow* window) {
 			if (event.type == sf::Event::Closed)
 				window->close();
 		}
+		//If no eagle lives left
 		if (flives < 1) {
 			eagle.setTextureRect(sf::IntRect(29 * 32 + 16, 32, 32, 32));
 			fnumber.setString(std::to_string(flives));
@@ -119,41 +127,36 @@ void Game::play(sf::RenderWindow* window) {
 	}
 }
 
+void Game::eraseMapSprite(int i, bool f) {
+	//i = index of sprite to delete in vector
+	//i == 0 nothing to erase
+	if (i == 0)
+		return;
+
+	//eagle hit
+	if (i == -1) {
+		flives--; return;
+	}
+	//erase sprites from drawing vector
+	if (i > 0) {
+		map[i] = area;
+		if (f) {
+			printf("%d\n", i + 1);
+			map[i + 1] = area;
+		}
+		else {
+			printf("%d\n", i + 26);
+			map[i + 26] = area;
+		}
+	}
+
+}
 void Game::calcEnemy(sf::RenderWindow* window) {
+	//if eagle destroyed stop movement
+	if (flives < 1)
+		return;
 
-	int b = enemies[0].draw(window);
-	if (b == -1) {
-		flives--; return;
-	}
-	if (b != 0) {
-		map[b] = area;
-		if (enemies[0].getDir()) {
-			map[(int)(b + 1)].setColor(sf::Color::Transparent);
-		}
-		else {
-
-			map[(int)(b + 26)].setColor(sf::Color::Transparent);
-		}
-	}
-
-	b = enemies[1].draw(window);
-	if (b == -1) {
-		flives--; return;
-	}
-	if (b != 0) {
-		map[b] = area;
-		if (enemies[1].getDir()) {
-			map[(int)(b + 1)].setColor(sf::Color::Transparent);
-		}
-		else {
-
-			map[(int)(b + 26)].setColor(sf::Color::Transparent);
-		}
-	}
-
-	enemies[0].draw(window);
-	enemies[1].draw(window);
-
+	//random movement every 1 second
 	srand(time(0));
 	int move = (rand() % 4) + 1;
 	if (clock.getElapsedTime().asSeconds() > 1.0f) {
@@ -168,11 +171,18 @@ void Game::calcEnemy(sf::RenderWindow* window) {
 		if (move == 2) enemies[1].moveRight();
 		if (move == 1) enemies[1].moveLeft();
 		enemies[0].shoot(); enemies[1].shoot();
-
 		clock.restart();
 	}
+	//update the map
+	eraseMapSprite(enemies[0].draw(window), enemies[0].getDir());
+	eraseMapSprite(enemies[1].draw(window), enemies[1].getDir());
 
+	//draw bullets and tank
+	enemies[0].draw(window);
+	enemies[1].draw(window);
 }
+
+//Drawing side bar contents
 void Game::sidebar(sf::RenderWindow* window) {
 	window->draw(rec);
 
@@ -189,39 +199,26 @@ void Game::sidebar(sf::RenderWindow* window) {
 	window->draw(fnumber);
 }
 void Game::draw(sf::RenderWindow* window) {
-	//window->draw(map[660]);
+	//if game is not over calculate sprite to erase
 	if (flives >= 1) {
-		int b = player.draw(window);
-		if (b == -1) {
-			flives--; return;
-		}
-		if (b != 0) {
-			map[b] = area;
-			if (player.getDir()) {
-				map[(int)(b + 1)].setColor(sf::Color::Transparent);
-			}
-			else {
-
-				map[(int)(b + 26)].setColor(sf::Color::Transparent);
-			}
-		}
+		eraseMapSprite(player.draw(window), player.getDir());
 	}
+	//Enemy calcualte sprite to erase
 	calcEnemy(window);
+
+	//Draw eagle
 	window->draw(eagle);
+
+	//Draw rest of map
 	for (auto i : map)
 		window->draw(i);
+
+	//Draw sidebar
 	sidebar(window);
+
+	//If the game is over draw over text
 	if (flives < 1)
 		window->draw(over);
-	/*for (auto i = 0; i < 26; i++) {
-		for (auto j = 0; j < 26; j++) {
-			switch (maps->at(i)[j])
-				case 'a':window->draw(map[i * 26 + j]);
-					break;
-				case 'b':
-
-		}
-	}*/
 }
 void Game::initStage() {
 
@@ -232,25 +229,30 @@ void Game::initStage() {
 		for (auto x : line) {
 			switch (x) {
 			case 'p': if (playerSet) {
+				area.setPosition((float)(col * 16), (float)(row * 16));
 				map.push_back(area); 
 				break;
 			}
 					else {
+				area.setPosition((float)(col * 16), (float)(row * 16));
 				player.setPosition(col * 16, row * 16);
 				playerSet = true;  break;
 			}
 			case 'e': if (eagleSet) {
-				/*map.push_back(eagle);*/ maps->at(col)[row] = 'e';  break;
+				area.setPosition((float)(col * 16), (float)(row * 16));
+				map.push_back(area); maps->at(col)[row] = 'e';  break;
 			}
 					else {
+				area.setPosition((float)(col * 16), (float)(row * 16));
 				eagle.setPosition((float)(col * 16), (float)(row * 16));
-				map.push_back(eagle); eagleSet = true; maps->at(col)[row] = 'e'; break;
+				map.push_back(area); eagleSet = true; maps->at(col)[row] = 'e'; break;
 			}
 			case 'b': brick.setPosition((float)(col * 16), (float)(row * 16));
 				map.push_back(brick); maps->at(col)[row] = 'b'; break;
 			case 's': stone.setPosition((float)(col * 16), (float)(row * 16));
 				map.push_back(stone); maps->at(col)[row] = 's'; break;
 			default:
+				area.setPosition((float)(col * 16), (float)(row * 16));
 				map.push_back(area);
 				break;
 			}

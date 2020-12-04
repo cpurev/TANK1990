@@ -1,14 +1,6 @@
 #include "menu.hpp"
 Menu::Menu() {}
 void Menu::start(int width, int height) {
-	if (!font.loadFromFile("rsc/tank_font.ttf")) {/*No font?*/ }
-
-	title.setFont(font);
-	title.setCharacterSize(32);
-	title.setFillColor(sf::Color::Red);
-	title.setString("TANK 1990");
-	title.setPosition(width / 6, height/2 - 64);
-
 	if (!font.loadFromFile("rsc/prstartk.ttf")) {/*No font?*/}
 	
 	items[0].setFont(font);
@@ -22,6 +14,13 @@ void Menu::start(int width, int height) {
 	items[1].setFillColor(sf::Color::White);
 	items[1].setString("QUIT");
 	items[1].setPosition(width/2 - 16, height/2 + 32);
+
+	texture.loadFromFile("rsc/texture.png");
+	ttle.setTexture(texture);
+	ttle.setTextureRect(sf::IntRect(0, 8 * 32, 13 * 32, 3 * 32));
+	//ttle.setScale(0.5f, 1.0f);
+	
+	ttle.setPosition(25, 95);
 
 	item = -1;
 }
@@ -51,7 +50,7 @@ void Menu::run(sf::RenderWindow& window) {
 				window.close();
 		}
 		window.clear();
-		window.draw(title);
+		window.draw(ttle);
 		for (auto i = 0; i < MENU_ITEMS; i++) {
 			window.draw(items[i]);
 		}
