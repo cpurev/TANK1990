@@ -31,6 +31,7 @@ private:
 	sf::Sprite brick;
 	sf::Sprite stone;
 	sf::Sprite eagle;
+	sf::Sprite area;
 };
 
 #endif

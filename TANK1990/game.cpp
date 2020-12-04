@@ -18,6 +18,7 @@ Game::Game() : maps(std::make_shared<std::vector<std::vector<char>>>(26, std::ve
 	eagle.setTexture(texture);
 	eagle.setTextureRect(sf::IntRect(28 * 32, 2 * 32, 32, 32));
 
+
 }
 void Game::run() {
 	int a = 0, b = 0;
@@ -87,10 +88,27 @@ void Game::play(sf::RenderWindow* window) {
 }
 
 void Game::draw(sf::RenderWindow* window) {
-	player.draw(window);
-	for (auto i : map){
-		window->draw(i);
+	int b = player.draw(window);
+	if (b != 0) {
+		map[b] = area;
+		if(player.getDir()){
+			map[b + 1] = area;
+		}
+		else {
+			map[b + 26] = area;
+		}
 	}
+	for (auto i : map)
+		window->draw(i);
+	/*for (auto i = 0; i < 26; i++) {
+		for (auto j = 0; j < 26; j++) {
+			switch (maps->at(i)[j])
+				case 'a':window->draw(map[i * 26 + j]);
+					break;
+				case 'b':
+
+		}
+	}*/
 }
 void Game::initStage() {
 
@@ -100,11 +118,18 @@ void Game::initStage() {
 	while (std::getline(file, line)) {
 		for (auto x : line) {
 			switch (x) {
-			case 'p': if (playerSet) break; else {
+			case 'p': if (playerSet) {
+				map.push_back(area); 
+				break;
+			}
+					else {
 				player.setPosition(col * 16, row * 16);
 				playerSet = true;  break;
 			}
-			case 'e': if (eagleSet) break; else {
+			case 'e': if (eagleSet) {
+				map.push_back(eagle); break;
+			}
+					else {
 				eagle.setPosition((float)(col * 16), (float)(row * 16));
 				map.push_back(eagle); eagleSet = true; maps->at(col)[row] = 'e'; break;
 			}
@@ -113,6 +138,7 @@ void Game::initStage() {
 			case 's': stone.setPosition((float)(col * 16), (float)(row * 16));
 				map.push_back(stone); maps->at(col)[row] = 's'; break;
 			default:
+				map.push_back(area);
 				break;
 			}
 			col++;
@@ -121,9 +147,10 @@ void Game::initStage() {
 		col = 0;
 	}
 	player.getMap(maps);
-	/*for (auto i = 0; i < maps->size(); i++) {
-		for (auto j = 0; j < maps->at(i).size(); j++) {
-			printf("%c", maps->at(i)[j]);
+	//printf("%f ", map->at(208).getPosition().x);
+	/*for (auto i = 0; i < 26; i++) {
+		for (auto j = 0; j < 26; j++) {
+			printf("%f ", map[i * 26 + j].getPosition().x);
 		}
 		printf("\n");
 	}*/
