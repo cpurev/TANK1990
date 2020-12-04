@@ -45,6 +45,11 @@ int Player::draw(sf::RenderWindow* window) {
 			maps->at((bulPosition.x / 16.0f) + 1.0f)[bulPosition.y / 16] = 'a';
 			return (((bulPosition.y / 16) * 26) + bulPosition.x / 16);
 		}
+		else if (maps->at(bulPosition.x / 16)[bulPosition.y / 16] == 'a' || maps->at((bulPosition.x / 16.0f) + 1.0f)[bulPosition.y / 16] == 'a') 
+			return 0;
+		else {
+			isBullet = false; exBullet = false;
+		}
 	}
 	else {
 		if (maps->at(bulPosition.x / 16)[bulPosition.y / 16] == 'b' || maps->at((bulPosition.x / 16.0f) )[bulPosition.y / 16 + 1.0f ] == 'b') {
@@ -52,6 +57,11 @@ int Player::draw(sf::RenderWindow* window) {
 			maps->at(bulPosition.x / 16)[bulPosition.y / 16] = 'a';
 			maps->at((bulPosition.x / 16.0f) )[bulPosition.y / 16 + 1.0f] = 'a';
 			return (((bulPosition.y / 16) * 26) + bulPosition.x / 16);
+		}
+		else if (maps->at(bulPosition.x / 16)[bulPosition.y / 16] == 'a' || maps->at((bulPosition.x / 16.0f))[bulPosition.y / 16 + 1.0f] == 'a')
+			return 0;
+		else {
+			isBullet = false; exBullet = false;
 		}
 	}
 	return 0;

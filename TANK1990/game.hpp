@@ -20,6 +20,7 @@ public:
 	void run();
 	void play(sf::RenderWindow* window);
 	void draw(sf::RenderWindow* window);
+	void sidebar(sf::RenderWindow* window);
 private:
 	Menu menu;
 	bool eagleSet = false;
@@ -32,6 +33,18 @@ private:
 	sf::Sprite stone;
 	sf::Sprite eagle;
 	sf::Sprite area;
+	sf::Sprite lives;
+	sf::Sprite enemy;
+	sf::Sprite flag;
+	int elives = 20;
+	int plives = 10;
+	int flives = 1;
+	sf::Text fnumber;
+	sf::Text pnumber;
+	sf::RectangleShape rec;
+	sf::Font font;
+	sf::Color color;
+
 };
 
 #endif
