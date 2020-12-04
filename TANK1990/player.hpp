@@ -5,8 +5,8 @@
 class Player {
 public:
 	Player();
-	void setPosition(int x, int y);
-	sf::Sprite getTank();
+	void setPosition(int x, int y); 
+	void draw(sf::RenderWindow* window);
 	void getMap(std::shared_ptr<std::vector<std::vector<char>>>& m);
 	void moveUp();
 	void moveDown();
@@ -14,10 +14,14 @@ public:
 	void moveRight();
 	void shoot();
 private:
-	sf::Texture playerTex;
+	sf::Texture texture;
 	sf::Sprite playerTank;
+	sf::Sprite bullet;
+	bool isBullet = false;
+	bool exBullet = false;
+	float bulletVelX = 0;
+	float bulletVelY = -8.5f;
 	sf::Vector2f position;
-	std::vector<sf::Sprite> map;
 	std::shared_ptr<std::vector<std::vector<char>>> maps;
 };
 

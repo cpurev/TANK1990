@@ -73,8 +73,8 @@ void Game::play(sf::RenderWindow* window) {
 					player.moveLeft();
 				if (event.key.code == sf::Keyboard::Right)
 					player.moveRight();
-				/*if (event.key.code == sf::Keyboard::Space)
-					player.shoot();*/
+				if (event.key.code == sf::Keyboard::Space)
+					player.shoot();
 			}
 			// "close requested" event: we close the window
 			if (event.type == sf::Event::Closed)
@@ -87,7 +87,7 @@ void Game::play(sf::RenderWindow* window) {
 }
 
 void Game::draw(sf::RenderWindow* window) {
-	window->draw(player.getTank());
+	player.draw(window);
 	for (auto i : map){
 		window->draw(i);
 	}

@@ -133,6 +133,14 @@
     <ClInclude Include="menu.hpp" />
     <ClInclude Include="player.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="bulCollision.asm">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\puluu\AppData\Local\nasm\nasm  -f win64   bulCollision.asm</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">bulCollision.obj</Outputs>
+    </CustomBuild>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
