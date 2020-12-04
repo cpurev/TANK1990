@@ -20,12 +20,20 @@ Game::Game() : maps(std::make_shared<std::vector<std::vector<char>>>(26, std::ve
 
 	lives.setTexture(texture);
 	lives.setTextureRect(sf::IntRect(29 * 32 + 16, 2 * 32 + 16, 16, 16));
+	lives.setPosition((float)(424.0f), (float)(184.0f));
+
 
 	flag.setTexture(texture);
-	flag.setTextureRect(sf::IntRect(30 * 32 + 16, 2 * 32, 32, 32));
+	flag.setTextureRect(sf::IntRect(29 * 32 + 16, 4 * 32 + 16, 16, 16));
+	for (float i = 0; i < elives / 2; i++) {
+		for (float j = 0; j < 2; j++) {
+			flag.setPosition((float)(424.0f + j * 16.0f), (float)(8.0f + i * 16.0f));
+			enemy.push_back(flag);
+		}
+	}
 
-	enemy.setTexture(texture);
-	enemy.setTextureRect(sf::IntRect(29 * 32 + 16, 4 * 32 + 16, 16, 16));
+	flag.setTextureRect(sf::IntRect(30 * 32 + 16, 2 * 32, 32, 32));
+	flag.setPosition((float)(424.0f), (float)(216.0f));
 
 	if (!font.loadFromFile("rsc/prstartk.ttf")) {/*No font?*/ }
 
@@ -33,11 +41,19 @@ Game::Game() : maps(std::make_shared<std::vector<std::vector<char>>>(26, std::ve
 	pnumber.setString(std::to_string(plives));
 	pnumber.setCharacterSize(8);
 	pnumber.setFillColor(sf::Color::Black);
+	pnumber.setPosition((float)(444.0f), (float)(186.0f));
 
 	fnumber.setFont(font);
 	fnumber.setString(std::to_string(flives));
 	fnumber.setCharacterSize(12);
 	fnumber.setFillColor(sf::Color::Black);
+	fnumber.setPosition((float)(435.0f), (float)(238.0f));
+
+	over.setFont(font);
+	over.setString("GAME OVER!");
+	over.setCharacterSize(36);
+	over.setFillColor(sf::Color::Red);
+	over.setPosition((float)(50.0f), (float)(198.0f));
 
 	rec.setSize(sf::Vector2f(48, 416));
 	color.r = 110; color.b = 110; color.g = 110;
@@ -54,32 +70,8 @@ void Game::run() {
 	music.play();
 	window.setFramerateLimit(60);
 	// Start menu
-	while (window.isOpen())
-	{
-		// check all the window's events that were triggered since the last iteration of the loop
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::KeyReleased) {
-				if (event.key.code == sf::Keyboard::Up)
-					menu.moveUp();
-				if (event.key.code == sf::Keyboard::Down)
-					menu.moveDown();
-				if (event.key.code == sf::Keyboard::Return) {
-					if (menu.getItemIndex() == 0)
-						play(&window);
-					else
-						window.close();
-				}
-			}
-			// "close requested" event: we close the window
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-		window.clear();
-		menu.draw(window);
-		window.display();
-	}
+	menu.run(window);
+	play(&window);
 }
 void Game::play(sf::RenderWindow* window) {
 	initStage();
@@ -89,7 +81,7 @@ void Game::play(sf::RenderWindow* window) {
 		sf::Event event;
 		while (window->pollEvent(event))
 		{
-			if (event.type == sf::Event::KeyReleased) {
+			if (event.type == sf::Event::KeyReleased && flives >= 1) {
 				if (event.key.code == sf::Keyboard::Up)
 					player.moveUp();
 				if (event.key.code == sf::Keyboard::Down)
@@ -105,6 +97,10 @@ void Game::play(sf::RenderWindow* window) {
 			if (event.type == sf::Event::Closed)
 				window->close();
 		}
+		if (flives < 1) {
+			eagle.setTextureRect(sf::IntRect(29 * 32 + 16, 32, 32, 32));
+			fnumber.setString(std::to_string(flives));
+		}
 		window->clear();
 		draw(window);
 		window->display();
@@ -113,39 +109,42 @@ void Game::play(sf::RenderWindow* window) {
 void Game::sidebar(sf::RenderWindow* window) {
 	window->draw(rec);
 
-	for (float i = 0; i < elives/2; i++) {
-		for (float j = 0; j < 2; j++) {
-			enemy.setPosition((float)(424.0f + j * 16.0f), (float)(8.0f + i * 16.0f));
-			window->draw(enemy);
-		}
+	for (auto i : enemy) {
+		window->draw(i);
 	}
 
-	lives.setPosition((float)(424.0f), (float)(184.0f));
 	window->draw(lives);
 
-	pnumber.setPosition((float)(444.0f), (float)(186.0f));
 	window->draw(pnumber);
 
-	flag.setPosition((float)(424.0f), (float)(216.0f));
 	window->draw(flag);
 
-	fnumber.setPosition((float)(435.0f), (float)(238.0f));
 	window->draw(fnumber);
 }
 void Game::draw(sf::RenderWindow* window) {
-	int b = player.draw(window);
-	if (b != 0) {
-		map[b] = area;
-		if(player.getDir()){
-			map[b + 1] = area;
+	//window->draw(map[660]);
+	if (flives >= 1) {
+		int b = player.draw(window);
+		if (b == -1) {
+			flives--; return;
 		}
-		else {
-			map[b + 26] = area;
+		if (b != 0) {
+			map[b] = area;
+			if (player.getDir()) {
+				map[(int)(b + 1)].setColor(sf::Color::Transparent);
+			}
+			else {
+
+				map[(int)(b + 26)].setColor(sf::Color::Transparent);
+			}
 		}
 	}
+	window->draw(eagle);
 	for (auto i : map)
 		window->draw(i);
 	sidebar(window);
+	if (flives < 1)
+		window->draw(over);
 	/*for (auto i = 0; i < 26; i++) {
 		for (auto j = 0; j < 26; j++) {
 			switch (maps->at(i)[j])
@@ -173,7 +172,7 @@ void Game::initStage() {
 				playerSet = true;  break;
 			}
 			case 'e': if (eagleSet) {
-				map.push_back(eagle); maps->at(col)[row] = 'e';  break;
+				/*map.push_back(eagle);*/ maps->at(col)[row] = 'e';  break;
 			}
 					else {
 				eagle.setPosition((float)(col * 16), (float)(row * 16));

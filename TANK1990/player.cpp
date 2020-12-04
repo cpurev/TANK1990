@@ -26,7 +26,7 @@ int Player::draw(sf::RenderWindow* window) {
 	window->draw(bullet);
 	exBullet = true;
 	bullet.setPosition(bullet.getPosition().x + bulletVelX, bullet.getPosition().y + bulletVelY);
-	bulPosition.x += bulletVelX; bulPosition.y += bulletVelY;
+	bulPosition.x += (int)bulletVelX; bulPosition.y += (int)bulletVelY;
 	//printf("%f %f\n", bullet.getPosition().x, bullet.getPosition().y);
 	if (bullet.getPosition().x > 416 || bullet.getPosition().x < -8 || bullet.getPosition().y > 416 || bullet.getPosition().y < -8) {
 		exBullet = false; isBullet = false; return 0;
@@ -39,33 +39,41 @@ int Player::draw(sf::RenderWindow* window) {
 	else
 		trvBullet = false;
 	if (dirBullet) {
-		if (maps->at(bulPosition.x / 16)[bulPosition.y / 16] == 'b' || maps->at((bulPosition.x / 16.0f) + 1.0f)[bulPosition.y / 16] == 'b') {
+		if (maps->at(bulPosition.x / 16)[bulPosition.y / 16] == 'b' || maps->at((size_t)((bulPosition.x / 16) + 1))[bulPosition.y / 16] == 'b') {
 			isBullet = false; exBullet = false;
 			maps->at(bulPosition.x / 16)[bulPosition.y / 16] = 'a';
-			maps->at((bulPosition.x / 16.0f) + 1.0f)[bulPosition.y / 16] = 'a';
+			maps->at((int)((bulPosition.x / 16) + 1))[bulPosition.y / 16] = 'a';
 			return (((bulPosition.y / 16) * 26) + bulPosition.x / 16);
 		}
-		else if (maps->at(bulPosition.x / 16)[bulPosition.y / 16] == 'a' || maps->at((bulPosition.x / 16.0f) + 1.0f)[bulPosition.y / 16] == 'a') 
+		else if (maps->at(bulPosition.x / 16)[bulPosition.y / 16] == 'a' || maps->at((int)((bulPosition.x / 16) + 1))[bulPosition.y / 16] == 'a') 
 			return 0;
+		else if (maps->at(bulPosition.x / 16)[bulPosition.y / 16] == 'e' || maps->at((int)((bulPosition.x / 16) + 1))[bulPosition.y / 16] == 'e') {
+			isBullet = false; exBullet = false; return -1;
+		}
 		else {
 			isBullet = false; exBullet = false;
 		}
 	}
 	else {
-		if (maps->at(bulPosition.x / 16)[bulPosition.y / 16] == 'b' || maps->at((bulPosition.x / 16.0f) )[bulPosition.y / 16 + 1.0f ] == 'b') {
+		if (maps->at(bulPosition.x / 16)[bulPosition.y / 16] == 'b' || maps->at((bulPosition.x / 16.0f) )[bulPosition.y / 16 + 1 ] == 'b') {
 			isBullet = false; exBullet = false;
 			maps->at(bulPosition.x / 16)[bulPosition.y / 16] = 'a';
-			maps->at((bulPosition.x / 16.0f) )[bulPosition.y / 16 + 1.0f] = 'a';
+			maps->at((bulPosition.x / 16.) )[bulPosition.y / 16 + 1] = 'a';
+			//printf("%d", ((bulPosition.y / 16) * 26) + bulPosition.x / 16);
 			return (((bulPosition.y / 16) * 26) + bulPosition.x / 16);
 		}
-		else if (maps->at(bulPosition.x / 16)[bulPosition.y / 16] == 'a' || maps->at((bulPosition.x / 16.0f))[bulPosition.y / 16 + 1.0f] == 'a')
+		else if (maps->at(bulPosition.x / 16)[bulPosition.y / 16] == 'a' || maps->at((bulPosition.x / 16.0f))[bulPosition.y / 16 + 1] == 'a')
 			return 0;
+		else if (maps->at(bulPosition.x / 16)[bulPosition.y / 16] == 'e' || maps->at((bulPosition.x / 16.0f))[bulPosition.y / 16 + 1] == 'e'){
+			 isBullet = false; exBullet = false; return -1;
+		}
 		else {
 			isBullet = false; exBullet = false;
 		}
 	}
 	return 0;
 }
+
 bool Player::getDir() {
 	return dirBullet;
 }
@@ -164,7 +172,8 @@ void Player::shoot() {
 	index = 0;
 	//Bullet fires from center of tank
 	bullet.setPosition(position.x + 12, position.y +12);
-	bulPosition = position;
+	bulPosition.x = (int)position.x;
+	bulPosition.y = (int)position.y;
 
 	switch (face) {
 	case 'U': x = 0; y = -1; break;
@@ -191,7 +200,7 @@ void Player::shoot() {
 		i++;
 		index++;
 	}
-	printmap();
+	//printmap();
 
 	//printf("\n\n");
 	//printf("%d", bar(&maps));

@@ -26,13 +26,40 @@ void Menu::start(int width, int height) {
 	item = -1;
 }
 
-void Menu::draw(sf::RenderWindow &window) {
-	window.draw(title);
-	for (auto i = 0; i < MENU_ITEMS; i++) {
-		window.draw(items[i]);
-	}
-}
 
+void Menu::run(sf::RenderWindow& window) {
+	while (window.isOpen())
+	{
+		// check all the window's events that were triggered since the last iteration of the loop
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::KeyReleased) {
+				if (event.key.code == sf::Keyboard::Up)
+					moveUp();
+				if (event.key.code == sf::Keyboard::Down)
+					moveDown();
+				if (event.key.code == sf::Keyboard::Return) {
+					if (getItemIndex() == 0)
+						return;
+					else
+						window.close();
+				}
+			}
+			// "close requested" event: we close the window
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+		window.clear();
+		window.draw(title);
+		for (auto i = 0; i < MENU_ITEMS; i++) {
+			window.draw(items[i]);
+		}
+		window.display();
+		
+	}
+
+}
 void Menu::moveUp() {
 	if (item - 1 >= 0) {
 		items[item].setFillColor(sf::Color::White);

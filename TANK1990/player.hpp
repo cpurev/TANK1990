@@ -30,7 +30,7 @@ private:
 	float bulletfixed;
 	int index = 0;
 	sf::Vector2f position;
-	sf::Vector2f bulPosition;
+	sf::Vector2i bulPosition;
 	std::shared_ptr<std::vector<std::vector<char>>> maps;
 };
 
