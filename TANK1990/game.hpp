@@ -21,6 +21,7 @@ public:
 	void play(sf::RenderWindow* window);
 	void draw(sf::RenderWindow* window);
 	void sidebar(sf::RenderWindow* window);
+	void calcEnemy(sf::RenderWindow* window);
 private:
 	Menu menu;
 	bool eagleSet = false;
@@ -38,7 +39,7 @@ private:
 	sf::Sprite eagle;
 	sf::Sprite area;
 	sf::Sprite lives;
-	std::vector<sf::Sprite> enemy;
+	std::vector<sf::Sprite> enemyCount;
 	sf::Sprite flag;
 	sf::Text fnumber;
 	sf::Text pnumber;
@@ -46,6 +47,7 @@ private:
 	sf::RectangleShape rec;
 	sf::Font font;
 	sf::Color color;
+	sf::Clock clock;
 
 };
 

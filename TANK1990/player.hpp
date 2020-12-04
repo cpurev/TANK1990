@@ -15,6 +15,8 @@ public:
 	void shoot();
 	void printmap();
 	bool getDir();
+	void setColor(sf::Color color);
+	static std::shared_ptr<std::vector<std::vector<char>>> maps;
 private:
 	sf::Texture texture;
 	sf::Sprite playerTank;
@@ -31,7 +33,6 @@ private:
 	int index = 0;
 	sf::Vector2f position;
 	sf::Vector2i bulPosition;
-	std::shared_ptr<std::vector<std::vector<char>>> maps;
 };
 
 #endif

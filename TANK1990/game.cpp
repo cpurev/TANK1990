@@ -3,6 +3,8 @@
 
 #include <fstream>
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 
 #include "SFML/Audio/Music.hpp"
 
@@ -28,7 +30,7 @@ Game::Game() : maps(std::make_shared<std::vector<std::vector<char>>>(26, std::ve
 	for (float i = 0; i < elives / 2; i++) {
 		for (float j = 0; j < 2; j++) {
 			flag.setPosition((float)(424.0f + j * 16.0f), (float)(8.0f + i * 16.0f));
-			enemy.push_back(flag);
+			enemyCount.push_back(flag);
 		}
 	}
 
@@ -59,6 +61,16 @@ Game::Game() : maps(std::make_shared<std::vector<std::vector<char>>>(26, std::ve
 	color.r = 110; color.b = 110; color.g = 110;
 	rec.setPosition(416, 0);
 	rec.setFillColor(color);
+
+	//CAN BE DYNAMIC ~~~ BOT SPAWN LOCATION
+	enemies[0].setPosition(4 * 16, 0);
+	enemies[0].setColor(sf::Color::White);
+	enemies[0] = player;
+
+	enemies[1].setPosition(20 * 16, 0);
+	//enemies[1]=player;
+	enemies[1].setColor(sf::Color::White);
+
 }
 void Game::run() {
 	int a = 0, b = 0;
@@ -106,10 +118,65 @@ void Game::play(sf::RenderWindow* window) {
 		window->display();
 	}
 }
+
+void Game::calcEnemy(sf::RenderWindow* window) {
+
+	int b = enemies[0].draw(window);
+	if (b == -1) {
+		flives--; return;
+	}
+	if (b != 0) {
+		map[b] = area;
+		if (enemies[0].getDir()) {
+			map[(int)(b + 1)].setColor(sf::Color::Transparent);
+		}
+		else {
+
+			map[(int)(b + 26)].setColor(sf::Color::Transparent);
+		}
+	}
+
+	b = enemies[1].draw(window);
+	if (b == -1) {
+		flives--; return;
+	}
+	if (b != 0) {
+		map[b] = area;
+		if (enemies[1].getDir()) {
+			map[(int)(b + 1)].setColor(sf::Color::Transparent);
+		}
+		else {
+
+			map[(int)(b + 26)].setColor(sf::Color::Transparent);
+		}
+	}
+
+	enemies[0].draw(window);
+	enemies[1].draw(window);
+
+	srand(time(0));
+	int move = (rand() % 4) + 1;
+	if (clock.getElapsedTime().asSeconds() > 1.0f) {
+		if (move == 4) enemies[0].moveDown();
+		if (move == 3) enemies[0].moveUp();
+		if (move == 2) enemies[0].moveRight();
+		if (move == 1) enemies[0].moveLeft();
+
+		move = (rand() % 4) + 1;
+		if (move == 4) enemies[1].moveDown();
+		if (move == 3) enemies[1].moveUp();
+		if (move == 2) enemies[1].moveRight();
+		if (move == 1) enemies[1].moveLeft();
+		enemies[0].shoot(); enemies[1].shoot();
+
+		clock.restart();
+	}
+
+}
 void Game::sidebar(sf::RenderWindow* window) {
 	window->draw(rec);
 
-	for (auto i : enemy) {
+	for (auto i : enemyCount) {
 		window->draw(i);
 	}
 
@@ -139,6 +206,7 @@ void Game::draw(sf::RenderWindow* window) {
 			}
 		}
 	}
+	calcEnemy(window);
 	window->draw(eagle);
 	for (auto i : map)
 		window->draw(i);

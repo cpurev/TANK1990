@@ -5,11 +5,14 @@ Player::Player() {
 	
 	texture.loadFromFile("rsc/texture.png");
 	playerTank.setTexture(texture);
-	playerTank.setTextureRect(sf::IntRect(24*32, 0, 32, 32));
+	playerTank.setTextureRect(sf::IntRect(4 * 32, 0, 32, 32));
 
 	bullet.setTexture(texture);
 	bullet.setTextureRect(sf::IntRect(29 * 32 + 16, 4*32, 8, 8));
 
+}
+void Player::setColor(sf::Color color) {
+	playerTank.setColor(color);
 }
 
 
@@ -85,13 +88,14 @@ void Player::printmap() {
 		printf("\n");
 	}
 }
+std::shared_ptr<std::vector<std::vector<char>>> Player::maps = nullptr;
 
 void Player::getMap(std::shared_ptr<std::vector<std::vector<char>>>& m){
 	maps = m;
 }
 void Player::moveUp() {
 	playerTank.setTextureRect(sf::IntRect(24 * 32, 0, 32, 32));
-	face = 'U';
+	//face = 'U';
 	if (!isBullet) {
 		dirBullet = true;
 		bullet.setTextureRect(sf::IntRect(29 * 32 + 16, 4 * 32, 8, 8));
@@ -109,7 +113,7 @@ void Player::moveUp() {
 }
 void Player::moveRight() {
 	playerTank.setTextureRect(sf::IntRect(25* 32, 0, 32, 32));
-	face = 'R';
+	//face = 'R';
 	if (!isBullet) {
 		dirBullet = false;
 		bullet.setTextureRect(sf::IntRect(29 * 32 + 24, 4 * 32, 8, 8));
@@ -127,7 +131,7 @@ void Player::moveRight() {
 }
 void Player::moveDown() {
 	playerTank.setTextureRect(sf::IntRect(26 * 32, 0, 32, 32));
-	face = 'D';
+	//face = 'D';
 	if (!isBullet) {
 		dirBullet = true;
 		bullet.setTextureRect(sf::IntRect(30 * 32, 4 * 32, 8, 8));
@@ -145,7 +149,7 @@ void Player::moveDown() {
 }
 void Player::moveLeft() {
 	playerTank.setTextureRect(sf::IntRect(27 * 32, 0, 32, 32));
-	face = 'L';
+	//face = 'L';
 	if (!isBullet) {
 		dirBullet = false;
 		bullet.setTextureRect(sf::IntRect(30 * 32 + 8, 4 * 32, 8, 8));
@@ -175,7 +179,7 @@ void Player::shoot() {
 	bulPosition.x = (int)position.x;
 	bulPosition.y = (int)position.y;
 
-	switch (face) {
+	/*switch (face) {
 	case 'U': x = 0; y = -1; break;
 	case 'R': x = 1; y = 0; break;
 	case 'D': x = 0; y = 1; break;
@@ -199,7 +203,7 @@ void Player::shoot() {
 		}
 		i++;
 		index++;
-	}
+	}*/
 	//printmap();
 
 	//printf("\n\n");
